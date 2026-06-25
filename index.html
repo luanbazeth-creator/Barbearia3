@@ -375,36 +375,44 @@
             document.getElementById("hora").value = "";
 
         }
-        function abrirLogin() {
+        async function abrirLogin() {
 
-            let senhaSalva = localStorage.getItem("senhaAdmin");
+            const email = prompt(
+                "Digite o email do administrador:"
+            );
 
-            if (!senhaSalva) {
+            if (!email) return;
 
-                let novaSenha = prompt("Crie uma senha para o administrador:");
+            const senha = prompt(
+                "Digite a senha:"
+            );
 
-                if (!novaSenha) {
-                    alert("Senha inválida!");
-                    return;
-                }
+            if (!senha) return;
 
-                localStorage.setItem("senhaAdmin", novaSenha);
+            try {
 
-                alert("Senha criada com sucesso!");
-                return;
-            }
+                await window.signInWithEmailAndPassword(
+                    window.auth,
+                    email,
+                    senha
+                );
 
-            const senha = prompt("Digite a senha do administrador:");
+                document.getElementById("clienteArea")
+                    .style.display = "none";
 
-            if (senha === senhaSalva) {
-
-                document.getElementById("clienteArea").style.display = "none";
-                document.getElementById("adminArea").style.display = "block";
+                document.getElementById("adminArea")
+                    .style.display = "block";
 
                 carregarTabela();
 
-            } else {
-                alert("Senha incorreta");
+                alert("Login realizado!");
+
+            } catch (erro) {
+
+                alert("Email ou senha incorretos.");
+
+                console.error(erro);
+
             }
         }
 
@@ -542,7 +550,10 @@
 
     <script type="module">
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
         import {
             getFirestore,
@@ -562,6 +573,10 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.auth = auth;
+        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
         const db = getFirestore(app);
 
         window.db = db;
