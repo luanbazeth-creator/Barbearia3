@@ -509,48 +509,62 @@
 
         async function alterarEmail() {
 
-            const novoEmail = prompt("Digite o novo email:");
+            const senha = prompt("Digite sua senha atual:");
+            if (!senha) return;
 
+            const novoEmail = prompt("Digite o novo email:");
             if (!novoEmail) return;
 
             try {
 
-                await window.updateEmail(
-                    window.auth.currentUser,
-                    novoEmail
+                const user = window.auth.currentUser;
+
+                const credential = EmailAuthProvider.credential(
+                    user.email,
+                    senha
                 );
+
+                await reauthenticateWithCredential(user, credential);
+
+                await updateEmail(user, novoEmail);
 
                 alert("Email alterado com sucesso!");
 
             } catch (erro) {
 
-                alert(erro.code);
+                alert("Erro: " + erro.message);
 
             }
-
         }
 
         async function alterarSenha() {
 
-            const novaSenha = prompt("Digite a nova senha:");
+            const senhaAtual = prompt("Digite sua senha atual:");
+            if (!senhaAtual) return;
 
+            const novaSenha = prompt("Digite a nova senha:");
             if (!novaSenha) return;
 
             try {
 
-                await window.updatePassword(
-                    window.auth.currentUser,
-                    novaSenha
+                const user = window.auth.currentUser;
+
+                const credential = EmailAuthProvider.credential(
+                    user.email,
+                    senhaAtual
                 );
+
+                await reauthenticateWithCredential(user, credential);
+
+                await updatePassword(user, novaSenha);
 
                 alert("Senha alterada com sucesso!");
 
             } catch (erro) {
 
-                alert(erro.code);
+                alert("Erro: " + erro.message);
 
             }
-
         }
 
         window.addEventListener("DOMContentLoaded", function () {
@@ -581,7 +595,9 @@
             getAuth,
             signInWithEmailAndPassword,
             updateEmail,
-            updatePassword
+            updatePassword,
+            EmailAuthProvider,
+            reauthenticateWithCredential
         } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
         import {
@@ -601,7 +617,7 @@
             measurementId: "G-5H3RGWT5MX"
         };
 
-        const app = initializeApp(firebaseConfig);
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
         const auth = getAuth(app);
 
         window.auth = auth;
