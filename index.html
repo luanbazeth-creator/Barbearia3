@@ -162,10 +162,10 @@
 
                 <select id="servico">
                     <option value="">Selecione o serviço</option>
-                    <option>Corte Masculino </option>
-                    <option>Barba </option>
-                    <option>Corte + Barba </option>
-                    <option>Sobrancelha </option>
+                    <option>Corte Masculino</option>
+                    <option>Barba</option>
+                    <option>Corte + Barba</option>
+                    <option>Sobrancelha</option>
 
                 </select>
 
@@ -624,75 +624,73 @@
 
         <script type="module">
 
-            <script type="module">
+            import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-                <script type="module">
+            import {
+                getAuth,
+                signInWithEmailAndPassword,
+                updateEmail,
+                updatePassword,
+                EmailAuthProvider,
+                reauthenticateWithCredential
+            } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-                    import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+            import {
+                getFirestore,
+                collection,
+                addDoc,
+                getDocs
+            } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-                    import {
-                        getAuth,
-                        signInWithEmailAndPassword,
-                        updateEmail,
-                        updatePassword,
-                        EmailAuthProvider,
-                        reauthenticateWithCredential
-                    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-                    import {
-                        getFirestore,
-                        collection,
-                        addDoc,
-                        getDocs
-                    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyA32KtwwDhRaP6QSGoBze9ybHkaGzsxpx8",
-                    authDomain: "barbeiro-6011e.firebaseapp.com",
-                    projectId: "barbeiro-6011e",
-                    storageBucket: "barbeiro-6011e.firebasestorage.app",
-                    messagingSenderId: "922112980364",
-                    appId: "1:922112980364:web:09060e9ed3405f5e7b12a9",
-                    measurementId: "G-5H3RGWT5MX"
+            const firebaseConfig = {
+                apiKey: "AIzaSyA32KtwwDhRaP6QSGoBze9ybHkaGzsxpx8",
+            authDomain: "barbeiro-6011e.firebaseapp.com",
+            projectId: "barbeiro-6011e",
+            storageBucket: "barbeiro-6011e.firebasestorage.app",
+            messagingSenderId: "922112980364",
+            appId: "1:922112980364:web:09060e9ed3405f5e7b12a9",
+            measurementId: "G-5H3RGWT5MX"
 };
 
-                    const app = initializeApp(firebaseConfig);
-                    const auth = getAuth(app);
-                    const db = getFirestore(app);
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
 
-                    window.auth = auth;
-                    window.db = db;
+            window.auth = auth;
+            window.db = db;
 
-                    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-                    window.updateEmail = updateEmail;
-                    window.updatePassword = updatePassword;
-                    window.EmailAuthProvider = EmailAuthProvider;
-                    window.reauthenticateWithCredential = reauthenticateWithCredential;
-                    window.getDocs = getDocs;
-                    window.collection = collection;
+            window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+            window.updateEmail = updateEmail;
+            window.updatePassword = updatePassword;
+            window.EmailAuthProvider = EmailAuthProvider;
+            window.reauthenticateWithCredential = reauthenticateWithCredential;
+            window.getDocs = getDocs;
+            window.collection = collection;
 
-                    window.salvarNoFirebase = async function (
+            window.salvarNoFirebase = async function (
+            nome,
+            telefone,
+            servico,
+            data,
+            hora
+            ) {
+        try {
+                await addDoc(collection(db, "Agendamentos"), {
                     nome,
                     telefone,
                     servico,
                     data,
                     hora
-                    ) {
-        try {
-                        await addDoc(collection(db, "Agendamentos"), {
-                            nome,
-                            telefone,
-                            servico,
-                            data,
-                            hora
-                        });
+                });
 
-                    console.log("Agendamento salvo no Firebase!");
+            console.log("Agendamento salvo no Firebase!");
 
         } catch (erro) {
-                        console.error("Erro ao salvar:", erro);
+                console.error("Erro ao salvar:", erro);
         }
 };
+
+            console.log("Firebase carregado com sucesso!");
 
     </script>
 
