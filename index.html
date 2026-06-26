@@ -334,10 +334,10 @@
             const confirmacao = confirm(
                 `Confirmar agendamento?
 
-                            Nome: ${nome}
-                            Serviço: ${servico}
-                            Data: ${data}
-                            Hora: ${hora}`
+                                Nome: ${nome}
+                                Serviço: ${servico}
+                                Data: ${data}
+                                Hora: ${hora}`
             );
 
             if (!confirmacao) {
@@ -448,15 +448,15 @@
                 const a = doc.data();
 
                 lista.innerHTML += `
-        <tr>
-            <td>${a.nome}</td>
-            <td>${a.telefone}</td>
-            <td>${a.servico}</td>
-            <td>${a.data}</td>
-            <td>${a.hora}</td>
-            <td>-</td>
-        </tr>
-        `;
+            <tr>
+                <td>${a.nome}</td>
+                <td>${a.telefone}</td>
+                <td>${a.servico}</td>
+                <td>${a.data}</td>
+                <td>${a.hora}</td>
+                <td>-</td>
+            </tr>
+            `;
 
                 total++;
 
@@ -618,36 +618,76 @@
         };
 
         <script type="module">
-        const auth = getAuth(app);
 
-        window.auth = auth;
-        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-        window.updateEmail = updateEmail;
-        window.updatePassword = updatePassword;
-        const db = getFirestore(app);
+            <script type="module">
 
-        window.db = db;
-        window.getDocs = getDocs;
-        window.collection = collection;
+                <script type="module">
 
-        window.salvarNoFirebase = async function (
-            nome,
-            telefone,
-            servico,
-            data,
-            hora
-        ) {
+                    import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-            try {
+                    import {
+                        getAuth,
+                        signInWithEmailAndPassword,
+                        updateEmail,
+                        updatePassword,
+                        EmailAuthProvider,
+                        reauthenticateWithCredential
+                    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-                await addDoc(collection(db, "Agendamentos"), {
+                    import {
+                        getFirestore,
+                        collection,
+                        addDoc,
+                        getDocs
+                    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyA32KtwwDhRaP6QSGoBze9ybHkaGzsxpx8",
+                    authDomain: "barbeiro-6011e.firebaseapp.com",
+                    projectId: "barbeiro-6011e",
+                    storageBucket: "barbeiro-6011e.firebasestorage.app",
+                    messagingSenderId: "922112980364",
+                    appId: "1:922112980364:web:09060e9ed3405f5e7b12a9",
+                    measurementId: "G-5H3RGWT5MX"
+};
+
+                    const app = initializeApp(firebaseConfig);
+                    const auth = getAuth(app);
+                    const db = getFirestore(app);
+
+                    window.auth = auth;
+                    window.db = db;
+
+                    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+                    window.updateEmail = updateEmail;
+                    window.updatePassword = updatePassword;
+                    window.EmailAuthProvider = EmailAuthProvider;
+                    window.reauthenticateWithCredential = reauthenticateWithCredential;
+                    window.getDocs = getDocs;
+                    window.collection = collection;
+
+                    window.salvarNoFirebase = async function (
                     nome,
                     telefone,
                     servico,
                     data,
                     hora
-                });
+                    ) {
+        try {
+                        await addDoc(collection(db, "Agendamentos"), {
+                            nome,
+                            telefone,
+                            servico,
+                            data,
+                            hora
+                        });
 
+                    console.log("Agendamento salvo no Firebase!");
+
+        } catch (erro) {
+                        console.error("Erro ao salvar:", erro);
+        }
+};
 
     </script>
 
