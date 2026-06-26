@@ -413,9 +413,14 @@
 
             } catch (erro) {
 
-                alert("Email ou senha incorretos.");
-
                 console.error(erro);
+
+                alert(
+                    "Erro Firebase: " +
+                    erro.code +
+                    "\n" +
+                    erro.message
+                );
 
             }
         }
