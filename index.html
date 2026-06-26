@@ -219,11 +219,15 @@
                     R$ <span id="faturamento">0</span>
                 </div>
 
-                <button class="btn" onclick="trocarSenha()">
-                    🔑 Trocar Senha
+                <button class="btn" onclick="alterarEmail()">
+                    📧 Alterar Email
                 </button>
 
                 <br><br>
+
+                <button class="btn" onclick="alterarSenha()">
+                    🔑 Alterar Senha
+                </button>
 
             </div>
 
@@ -503,27 +507,50 @@
             }
         }
 
-        function trocarSenha() {
+        async function alterarEmail() {
 
-            const senhaAtual = prompt("Digite a senha atual:");
+            const novoEmail = prompt("Digite o novo email:");
 
-            const senhaSalva = localStorage.getItem("senhaAdmin");
+            if (!novoEmail) return;
 
-            if (senhaAtual !== senhaSalva) {
-                alert("Senha atual incorreta!");
-                return;
+            try {
+
+                await window.updateEmail(
+                    window.auth.currentUser,
+                    novoEmail
+                );
+
+                alert("Email alterado com sucesso!");
+
+            } catch (erro) {
+
+                alert(erro.code);
+
             }
+
+        }
+
+        async function alterarSenha() {
 
             const novaSenha = prompt("Digite a nova senha:");
 
-            if (!novaSenha) {
-                alert("Senha inválida!");
-                return;
+            if (!novaSenha) return;
+
+            try {
+
+                await window.updatePassword(
+                    window.auth.currentUser,
+                    novaSenha
+                );
+
+                alert("Senha alterada com sucesso!");
+
+            } catch (erro) {
+
+                alert(erro.code);
+
             }
 
-            localStorage.setItem("senhaAdmin", novaSenha);
-
-            alert("Senha alterada com sucesso!");
         }
 
         window.addEventListener("DOMContentLoaded", function () {
@@ -552,7 +579,9 @@
 
         import {
             getAuth,
-            signInWithEmailAndPassword
+            signInWithEmailAndPassword,
+            updateEmail,
+            updatePassword
         } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -579,6 +608,8 @@
 
         window.auth = auth;
         window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.updateEmail = updateEmail;
+        window.updatePassword = updatePassword;
         const db = getFirestore(app);
 
         window.db = db;
