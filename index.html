@@ -617,7 +617,7 @@
             measurementId: "G-5H3RGWT5MX"
         };
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        <script type="module">
         const auth = getAuth(app);
 
         window.auth = auth;
@@ -648,14 +648,6 @@
                     hora
                 });
 
-                console.log("Salvo no Firebase!");
-
-            } catch (erro) {
-
-                console.error("Erro Firebase:", erro);
-
-            }
-        };
 
     </script>
 
